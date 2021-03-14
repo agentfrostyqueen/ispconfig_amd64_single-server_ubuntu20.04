@@ -38,6 +38,7 @@ wget -O - https://deb.goaccess.io/gnugpg.key | sudo apt-key --keyring /etc/apt/t
 sudo apt-get update  
 sudo apt-get install goaccess  
 cd /tmp; git clone https://github.com/agentfrostyqueen/ispconfig_amd64_single-server_ubuntu20.04; cd ispconfig_amd64_single-server_ubuntu20.04/; bash install.sh  
+Note: remove hhvm on odroid  
 
 ### Run this after the script ##
 apt-get -y install mailman  
