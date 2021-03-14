@@ -59,16 +59,11 @@ sudo dpkg-reconfigure locales
 sudo hostnamectl set-hostname sample.gr88er.com
 
 ### modify /etc/apt/source.list ##
-deb http://ports.ubuntu.com/ubuntu-ports/ focal multiverse
-
-deb-src http://ports.ubuntu.com/ubuntu-ports/ focal multiverse
-
-deb http://ports.ubuntu.com/ubuntu-ports/ focal-updates multiverse
-
-deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-updates multiverse
-
-deb http://ports.ubuntu.com/ubuntu-ports/ focal-backports multiverse
-
+deb http://ports.ubuntu.com/ubuntu-ports/ focal multiverse  
+deb-src http://ports.ubuntu.com/ubuntu-ports/ focal multiverse  
+deb http://ports.ubuntu.com/ubuntu-ports/ focal-updates multiverse  
+deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-updates multiverse  
+deb http://ports.ubuntu.com/ubuntu-ports/ focal-backports multiverse  
 deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-backports multiverse
 
 
@@ -84,22 +79,18 @@ sudo apt-get install goaccess
 cd /tmp; git clone https://github.com/agentfrostyqueen/ispconfig_amd64_single-server_ubuntu20.04; cd ispconfig_amd64_single-server_ubuntu20.04/; bash install.sh
 
 ### Run this after the script ##
-apt-get -y install mailman
-
-Languages to support: <-- en (English)
-Missing site list <-- Ok
-
+apt-get -y install mailman  
+Languages to support: <-- en (English)  
+Missing site list <-- Ok  
 
 newlist mailman
-------------------------------------------------------------------------------------------------------------------------------------------------
-Enter the email of the person running the list: <-- admin email address, e.g. listadmin@example.com
-Initial mailman password: <-- admin password for the mailman list
-------------------------------------------------------------------------------------------------------------------------------------------------
+Enter the email of the person running the list: <-- admin email address, e.g. listadmin@example.com  
+Initial mailman password: <-- admin password for the mailman list  
 
-newaliases
-service postfix restart
-ln -s /etc/mailman/apache.conf /etc/apache2/conf-available/mailman.conf
-a2enconf mailman
-service apache2 restart
-service mailman start
+newaliases  
+service postfix restart  
+ln -s /etc/mailman/apache.conf /etc/apache2/conf-available/mailman.conf  
+a2enconf mailman  
+service apache2 restart  
+service mailman start  
 
