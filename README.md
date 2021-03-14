@@ -43,6 +43,8 @@ cd /tmp; git clone https://github.com/agentfrostyqueen/ispconfig_amd64_single-se
 Note: remove hhvm on odroid  
 
 ### Run this after the script ##
+fix /etc/postfix/master.cf  
+openssl dhparam -out /etc/ssl/private/pure-ftpd-dhparams.pem 3072  
 create phpmyadmin table in DB  
 Fix phpmyadmin bugs  
 > /usr/share/phpmyadmin/libraries/plugin_interface.lib.php  
