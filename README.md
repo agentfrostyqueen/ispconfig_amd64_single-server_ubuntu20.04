@@ -1,5 +1,5 @@
 ### Version 3.0.6 #
-<b>v.3.0.6</b
+<b>v.3.0.6</b>
 
 Run the following command as root user:
 
