@@ -1,0 +1,160 @@
+v.3.0.6
+- Added fix for Debian 10
+- Removed support for multiserver setup in Debian 9 and Debian 10
+
+v.3.0.5
+- Added support for debain10 and php7.3
+
+v.3.0.4
+- Added Raspbian support
+- Bug fix
+
+v.3.0.3.1
+- Added small fix for ubuntu 18.04
+
+v.3.0.3
+- Added support for Ubuntu 18.04
+
+v.3.0.2
+- Added support for nginx on Debian 9
+- Phpmyadmin accessible on http:/IPADDRESS:8081/phpmyadmin
+- Roundcube accessible at https://IPADDRESS/roundcube/
+
+v.3.0.1
+- Added support for both PHP7 and PHP 5.6 in Debian 9
+
+v.3.0.0
+- Added support for Debian 9 - PHP 7 - Apache and Roundcube webmail - MariaDB as SQL
+
+v.2.2.6
+- Fix for Centos 7
+
+v.2.2.5
+- Fix for Centos 7
+- Small fix for debian multiserver setup and version installation
+
+v.2.2.4
+- various fix for Ubuntu 16.04
+
+v.2.2.3
+- Lot of fix for Ubuntu 16.04
+- fix for asking password in ispconfig autoinstall.ini parameter
+
+v.2.2.2
+- Fixed php7 install on ubuntu 16.04
+- Fixed php7-fpm with nginx
+
+v.2.2.1
+- Added support for let's encrypt for ubuntu 14.04, 15.10, 16.04, debian 7 and debian 8, for both apache2 and nginx
+
+v.2.2
+- Added support for ubuntu 16.04
+- working with ispconfig 3.1
+- gradually removing support for old versions of ispconfig
+
+v.2.1.1
+- Lot of bugfix ( thanks to webard )
+
+v.2.1.0
+- Adding support for ISPConfig 3.1 beta (Only for Debian 8 for now)
+
+v.2.0.4
+- Fixed issue Ubuntu 15.10/14.04 - [: ==: unary operator expected #92 
+
+v.2.0.3
+- Aded support for Roundcube Webmail on Debian 8 through Backports
+
+v.2.0.2
+- Small fix after merge 2.0.1
+
+v.2.0.1
+- Fixed Issue 87 (Squirrelmail related)
+
+v.2.0.0
+- Added Multiserver setup configuration on Debian 8 (use carfeully, and only if know what are you doing)
+- Improvment of log during install (the whole process is logged now)
+
+v.1.0.16
+- Added support for Support ubuntu 15.10
+
+v.1.0.15
+- Added support for ubuntu 14.04 LTS
+
+v.1.0.14
+- Starting developing for centos 7
+- Added implementation for Apache con Centos 7
+- Added implementation for Postfix con Centos 7
+- Added implementation for MySQL con Centos 7
+- Added implementation for Amavis con Centos 7
+
+Known missing part
+- No webmail installed
+- no courier support
+- no nginx support
+- no quota support
+- use with caution for now and don't use on production systems.
+
+v.1.0.13
+- Fix phpmyadmin install process hangs
+- Added warning for roundcube install to modify config for rounducbe remote user and pass 
+- Disable fstab edit for quota in OpenVZ environment
+- Removed systemd install during setup, causing problem after installation on some Debian 7 systems
+
+v.1.0.12
+- Added operation system detect based on /etc/os-relase
+- Added stop installation check if no suported os detected
+- Fix on nginx/apache restart
+
+v.1.0.11
+- Added optional Install for phpMyAdmin & XCache (Debian 7/Debian 8)
+
+v.1.0.10
+- Adding support for ISPConfig expert mode setup
+- Fix problem in debian 7 for install MySQL
+
+v.1.0.9
+- Added support for MariaDB 
+- Added fix for Nginx on Jessie
+- Smallfix installazion
+
+v.1.0.8
+- Added support for debian Jessie
+- Added Module for all
+- Fix minor issue
+- Remove Roundcube support for debian Jessie installation
+
+v.1.0.6
+- Starting modular system for better managment and integration
+- Added more presintall check
+- Added check for different distribution (Ubuntu, Debian Wheezy end Debian Jessie)
+- Little fix and improvments
+- Added check for sendmail installation and removal
+- Added rkhunter
+- Added jailkit version through simple editable variable
+- Changed dovect as default mta
+- Skip quota adding for tmpfs fylesystem
+
+v.1.0.5
+- Adding support for nGinx
+
+v.1.0.4
+- Adding log errors to /var/log/ispconfig_setup.log 
+- Added a2enmod fcgid, who caused panel not to work
+- Added DKIM support in amavisd-new (disabled by default)
+- Fixed issue in /etc/php5/conf.d/ming.ini changin comment from # to ;
+- Added some color and clear screen after installation is started
+
+v.1.0.2
+- Added support for inserit SSL data only one time, and then used all the time SSL is needed
+- Added possibility to insert blank information in SSL filed for quick setup
+- ISPconfig install process, completelly automated, no intereaction required
+- Fixed update of freshclam after install and restart demon
+- Added InstallFix pprocedure to do postinstall necessary fix
+- Fixed roundcube user configuration 
+
+v.1.0.1
+- check on apt repository needed for ISPConfig
+- No need of external files
+
+v.1.0.0
+- Very first version of the script
