@@ -307,10 +307,10 @@ if [ -f /etc/debian_version ]; then
 	fi
 	InstallISPConfig
 	InstallFix
-	echo -e "\n${green}Well done! ISPConfig installed and configured correctly :D${NC} 😃"
-	echo -e "\nNow you can access to your ISPConfig installation at: ${underlined}https://$CFG_HOSTNAME_FQDN:8080${NC} or ${underlined}https://${IP_ADDRESS[0]}:8080${NC}"
-	echo -e "The default ISPConfig Username is: ${bold}admin${NC}\n\t      and the Password is: ${bold}admin${NC}"
-	echo -e "${yellow}Warning: This is a security risk. Please change the default password after your first login.${NC}"
+	#echo -e "\n${green}Well done! ISPConfig installed and configured correctly :D${NC} 😃"
+	#echo -e "\nNow you can access to your ISPConfig installation at: ${underlined}https://$CFG_HOSTNAME_FQDN:8080${NC} or ${underlined}https://${IP_ADDRESS[0]}:8080${NC}"
+	#echo -e "The default ISPConfig Username is: ${bold}admin${NC}\n\t      and the Password is: ${bold}admin${NC}"
+	#echo -e "${yellow}Warning: This is a security risk. Please change the default password after your first login.${NC}"
 	
 	if [ "$CFG_WEBMAIL" == "roundcube" ]; then
 		if [ "$DISTRO" != "debian8" ]; then
@@ -364,10 +364,10 @@ elif [ -f /etc/redhat-release ]; then # /etc/centos-release
 	InstallISPConfig
 	#InstallFix
 	echo -e "\n\n"
-	echo -e "\n${green}Well done! ISPConfig installed and configured correctly :D${NC} 😃"
-	echo -e "\nNow you can access to your ISPConfig installation at: ${underlined}https://$CFG_HOSTNAME_FQDN:8080${NC} or ${underlined}https://${IP_ADDRESS[0]}:8080${NC}"
-	echo -e "The default ISPConfig Username is: ${bold}admin${NC}\n\t      and the Password is: ${bold}admin${NC}"
-	echo -e "${yellow}Warning: This is a security risk. Please change the default password after your first login.${NC}"
+	#echo -e "\n${green}Well done! ISPConfig installed and configured correctly :D${NC} 😃"
+	#echo -e "\nNow you can access to your ISPConfig installation at: ${underlined}https://$CFG_HOSTNAME_FQDN:8080${NC} or ${underlined}https://${IP_ADDRESS[0]}:8080${NC}"
+	#echo -e "The default ISPConfig Username is: ${bold}admin${NC}\n\t      and the Password is: ${bold}admin${NC}"
+	#echo -e "${yellow}Warning: This is a security risk. Please change the default password after your first login.${NC}"
 	echo -e "\n${red}If you setup Roundcube webmail go to: http://$CFG_HOSTNAME_FQDN/roundcubemail/installer and configure db connection${NC}"
 	echo -e "${red}After that disable access to installer in /etc/httpd/conf.d/roundcubemail.conf${NC}"
 elif [ -f /etc/SuSE-release ]; then
@@ -376,8 +376,8 @@ else
 	echo -e "${red}Unsupported Linux distribution.${NC}" >&2
 fi
 
-echo -e "\nYou can visit the GitHub repository at: https://github.com/servisys/ispconfig_setup/"
-echo "If you need support or have questions, ask here: https://www.howtoforge.com/community/#ispconfig-3.23"
-echo "Please report any errors or issues with this auto installer script at: https://github.com/servisys/ispconfig_setup/issues and with ISPConfig at: https://git.ispconfig.org/ispconfig/ispconfig3/issues"
+#echo -e "\nYou can visit the GitHub repository at: https://github.com/servisys/ispconfig_setup/"
+#echo "If you need support or have questions, ask here: https://www.howtoforge.com/community/#ispconfig-3.23"
+#echo "Please report any errors or issues with this auto installer script at: https://github.com/servisys/ispconfig_setup/issues and with ISPConfig at: https://git.ispconfig.org/ispconfig/ispconfig3/issues"
 exit 0
 
