@@ -181,3 +181,71 @@ Start the slave:
 
 and check the slave-status with  
 > SHOW SLAVE STATUS G  
+ 
+## Install ISPConfig on the Slave Server #
+
+Login into MySQL and create a root-user for server2:  
+
+> CREATE USER 'root'@'192.168.0.106' IDENTIFIED BY 'myrootpassword';  
+> GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.0.106' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
+> CREATE USER 'root'@'server2.example.tld' IDENTIFIED BY 'myrootpassword';  
+> GRANT ALL PRIVILEGES ON *.* TO 'root'@'server2.example.tld' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
+> CREATE USER 'root'@'2a01:dddd::2' IDENTIFIED BY 'myrootpassword';  
+> GRANT ALL PRIVILEGES ON *.* TO 'root'@'2001:db8::2' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
+> QUIT;  
+
+The replication covers all database. Copy the db-configs for PHPMyAdmin and roundcube from server1 to server2.  
+On server1:  
+
+> scp /etc/dbconfig-common/phpmyadmin.conf root@192.168.0.106:/etc/dbconfig-common/phpmyadmin.conf  
+> scp /etc/phpmyadmin/config-db.php root@192.168.0.106:/etc/phpmyadmin/config-db.php  
+> scp /etc/dbconfig-common/roundcube.conf root@192.168.0.106:/etc/dbconfig-common/roundcube.conf  
+> scp /etc/roundcube/debian-db.php root@192.168.0.106:/etc/roundcube/debian-db.php  
+ 
+On server2:  Install ISPConfig on server 2  
+Login into ISPConfig on server1 and go to _System / Server Services_ and choose server2.example.tld and set _Is
+mirror of Server_ to server1.example.tld:  
+Go to _Server Config_, choose Tab _Web_ and set the permissions for both servers:  
+If you have already data (Websites, Mail....) running on server1, go to _Tools / Resync_ and start a full resync (enable all checkboxes).  
+
+## Sync Emails with Dovecot #
+
+Since Dovecot 2 it's possible to use Dovect's dsync to keep the main base in sync. If you have already mail's on server1, they will be replicated to server2 without any further interaction.  
+You must use the same port (4711) and the same password (replication_password) on both servers.  
+server1:  
+
+Open /etc/dovecot/dovecot-sql.conf  
+> nano /etc/dovecot/dovecot-sql.conf  
+
+and enable the iterate_query:  
+old:  
+> #iterate_query = SELECT email as user FROM mail_user  
+
+new:  
+> iterate_query = SELECT email as user FROM mail_user  
+
+modify /etc/dovecot/dovecot.conf  
+> nano /etc/dovecot/dovecot.conf  
+
+restart Dovecot:  
+> service dovecot restart  
+
+server2:  
+modify /etc/dovecot/dovecot-sql.conf  
+> nano /etc/dovecot/dovecot-sql.conf  
+
+and enable the iterate_query:  
+old:  
+> #iterate_query = SELECT email as user FROM mail_user  
+
+new:  
+> iterate_query = SELECT email as user FROM mail_user  
+
+modify /etc/dovecot/dovecot.conf  
+> nano /etc/dovecot/dovecot.conf  
+
+restart Dovecot:  
+> service dovecot restart  
+
+You can check the replication on each server:  
+> doveadm replicator status '*'  
