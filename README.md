@@ -42,37 +42,53 @@ sudo apt-get remove apparmor apparmor-utils -y
 
 sudo apt update && sudo apt upgrade -y
 
-comment out RANDFILE in /etc/ssl/openssl.cnf
+### comment out RANDFILE in /etc/ssl/openssl.cnf ##
 
 sudo unlink /etc/localtime
+
 sudo ln -s /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime
+
 sudo timedatectl
+
 sudo locale-gen
+
 sudo dpkg-reconfigure locales
 
-set hostname using
+
+### set hostname using ##
 sudo hostnamectl set-hostname sample.gr88er.com
 
-modify /etc/apt/source.list
+### modify /etc/apt/source.list ##
 deb http://ports.ubuntu.com/ubuntu-ports/ focal multiverse
+
 deb-src http://ports.ubuntu.com/ubuntu-ports/ focal multiverse
+
 deb http://ports.ubuntu.com/ubuntu-ports/ focal-updates multiverse
+
 deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-updates multiverse
+
 deb http://ports.ubuntu.com/ubuntu-ports/ focal-backports multiverse
+
 deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-backports multiverse
+
 
 ### not applicable to odroid ##
 echo "deb https://deb.goaccess.io/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/goaccess.list
+
 wget -O - https://deb.goaccess.io/gnugpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/goaccess.gpg add -
+
 sudo apt-get update
+
 sudo apt-get install goaccess
 
+cd /tmp; git clone https://github.com/agentfrostyqueen/ispconfig_amd64_single-server_ubuntu20.04; cd ispconfig_amd64_single-server_ubuntu20.04/; bash install.sh
 
+### Run this after the script ##
 apt-get -y install mailman
-------------------------------------------------------------------------------------------------------------------------------------------------
+
 Languages to support: <-- en (English)
 Missing site list <-- Ok
-------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 newlist mailman
 ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -87,4 +103,3 @@ a2enconf mailman
 service apache2 restart
 service mailman start
 
-cd /tmp; git clone https://github.com/agentfrostyqueen/ispconfig_amd64_single-server_ubuntu20.04; cd ispconfig_amd64_single-server_ubuntu20.04/; bash install.sh
