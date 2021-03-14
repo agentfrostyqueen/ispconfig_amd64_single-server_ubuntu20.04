@@ -3,7 +3,7 @@
 
 Run the following command as root user:
 
-### Gr88er Specific Configs ###  
+### Gr88er Specific Configs #  
 sudo apt install ntp ntpdate nfs-common ssh openssh-server cockpit cockpit-packagekit -y  
 sudo dpkg-reconfigure dash  
 sudo service apparmor stop  
@@ -20,6 +20,8 @@ sudo dpkg-reconfigure locales
 
 ### set hostname using ##
 sudo hostnamectl set-hostname sample.gr88er.com  
+-modify /etc/hosts  
+-enable keyless login  
 
 ### modify /etc/apt/source.list ##
 deb http://ports.ubuntu.com/ubuntu-ports/ focal multiverse  
@@ -53,3 +55,129 @@ a2enconf mailman
 service apache2 restart  
 service mailman start  
 
+Install ISPConfig on server1 and prepare the slave server using the instruction above without ISPConfig  
+
+## MySQL Master-Master Replication #  
+
+### Prepare Server1 ##  
+
+Login into MySQL and create an account specifically for replication in MySQL. I use a separate user for the replication to minimize the possibility of compromise to other accounts (username and password are stored in plain text in the master info repository file or table):  
+> CREATE USER 'slaveuser2'@'server2.example.tld' IDENTIFIED BY 'slave_user_password';  
+> CREATE USER 'slaveuser2'@'192.168.0.106' IDENTIFIED BY 'slave_user_password';  
+> CREATE USER 'slaveuser2'@'2001:db8::2' IDENTIFIED BY 'slave_user_password';  
+
+and grant the REPLICATION SLAVE privilege:  
+> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser2'@'server2.example.tld';  
+> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser2'@'192.168.0.106';  
+> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser2'@'2001:db8::2';  
+> QUIT;  
+
+Make some changes for the replication to your MySQL-Config:  
+> vi /etc/mysql/my.cnf  
+
+Search for the section that starts with [mysqld], and put the following options into it (commenting out all existing
+conflicting options):  
+> [...]  
+> [mysqld]  
+> server-id = 1  
+> replicate-same-server-id = 0  
+> auto-increment-increment = 2  
+> auto-increment-offset = 1  
+> log_bin = mysql-bin.log  
+> expire_logs_days = 10  
+> max_binlog_size = 100M  
+> binlog_format = mixed  
+> sync_binlog = 1  
+> relay-log = slave-relay.log  
+> relay-log-index = slave-relay-log.index  
+> slave_skip_errors = 1007,1008,1050, 1396  
+> bind-address = ::  
+
+and restart MySQL afterwards:  
+> service mysql restart   
+
+### Prepare Server2 ##
+Make some changes for the replication to your MySQL-Config:  
+> nano /etc/mysql/my.cnf  
+
+Search for the section that starts with [mysqld], and put the following options into it (commenting out all existing conflicting options):  
+> [...]  
+> [mysqld]  
+> server-id = 2  
+> log_bin = mysql-bin.log  
+> expire_logs_days = 10  
+> max_binlog_size = 100M  
+> binlog_format = mixed  
+> sync_binlog = 1  
+> slave_skip_errors = 1007,1008,1050,1396  
+
+## Create a snapshot of the existing databases on server1 #  
+Dump the databases on server1 and enter the MySQL root password:  
+
+> mysqldump -p --all-databases --allow-keywords --master-data --events --single-transaction > /root/mysqldump.sql  
+
+Copy the dump to server2:  
+> scp /root/mysqldump.sql root@192.168.0.106:/root  
+
+### Import the dump on server2 ##  
+> mysql -u root -p < /root/mysqldump.sql  
+
+Shutdown mysql on server2:  
+> service mysql stop  
+
+Copy the defaults-file for MySQL from server1 to server2. Switch to server1 and run  
+> scp /etc/mysql/debian.cnf root@192.168.0.106:/etc/mysql/debian.cnf  
+
+Start MySQL on server2:  
+> service mysql start  
+
+and login into MySQL to set the master-server with:  
+> CHANGE MASTER TO MASTER_HOST="server1.example.tld", MASTER_USER="slaveuser2", MASTER_PASSWORD="slave_user_password";  
+
+Start the slave:  
+> START SLAVE;  
+
+and check the slave-status  
+And compare the Replication Master Binary Log Coordinates.  
+We are running a MySQL Master-Slave-Replication where server1 is the master and server2 the slave.  
+
+## MySQL Master-Master-Replication #
+Create the MySQL-User for the replication and grant the privileg in MySQL:  
+> CREATE USER 'slaveuser1'@'server1.example.tld' IDENTIFIED BY 'slave_user_password';  
+> CREATE USER 'slaveuser1'@'192.168.0.105' IDENTIFIED BY 'slave_user_password';  
+> CREATE USER 'slaveuser1'@'2001:db8::1' IDENTIFIED BY 'slave_user_password';  
+> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser1'@'server1.example.tld';  
+> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser1'@'192.168.0.105';  
+> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser1'@'2001:db8::1';  
+> QUIT;  
+
+Make some changes for the replication to your MySQL-Config on server2:  
+> vi /etc/mysql/my.cnf  
+
+Search for the section that starts with [mysqld], and put the following options into it (commenting out all existing
+conflicting options):  
+
+> [...]  
+> [mysqld]  
+> [...]  
+> replicate-same-server-id = 0  
+> auto-increment-increment = 2  
+> auto-increment-offset = 2  
+> relay-log = slave-relay.log  
+> relay-log-index = slave-relay-log.index  
+
+and restart MySQL:  
+> service mysql restart  
+
+Login into MySQL and get the Master Binary Log Coordinates:  
+> SHOW MASTER STATUS \G  
+
+Login into MySQL on server1 and set the master-server with  
+> CHANGE MASTER TO MASTER_HOST="server2.example.tld", MASTER_PASSWORD="slave_user_password", MASTER_USER="slaveuser1", MASTER_LOG_FILE='mysql-bin.000002',
+MASTER_LOG_POS=326;  
+
+Start the slave:  
+> START SLAVE;  
+
+and check the slave-status with  
+> SHOW SLAVE STATUS G  
