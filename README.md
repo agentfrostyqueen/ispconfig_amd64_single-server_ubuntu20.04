@@ -672,14 +672,58 @@ Some features are missing for now, only implemented Apache and Dovecot, no webma
 
 If `wget` fails, try adding the `--no-check-certificate` parameter.
 
-Follow the instructions on the screen
+===========Gr88er Specific Configs=====================================================
 
-### Who had contributed to this work? ###
+sudo apt install ntp ntpdate nfs-common ssh openssh-server cockpit cockpit-packagekit -y
+sudo dpkg-reconfigure dash
+sudo service apparmor stop
+sudo update-rc.d -f apparmor remove 
+sudo apt-get remove apparmor apparmor-utils -y
+sudo apt update && sudo apt upgrade -y
 
-* The scripts and instructions have been produced by Matteo Temporini ( <temporini.matteo@gmail.com> )
-* Special thanks to Travis CI for adding support to Raspberry and a big number of Bugs( https://github.com/tdulcet )
-* Special thanks to Torsten Widmann for contribution to the code
-* Special thanks to Michiel Kamphuis ( http://www.ensync.it/ ) for contribution to Multiserver Setup integration
-* Special thanks to Bartłomiej Gajda ( http://webard.me/ ) for the bug fixes to multiserver setup and beta installation
-* The code is based on the "Automatic Debian System Installation for ISPConfig 3" of Author: Mark Stunnenberg <mark@e-rave.nl>
-* Howtoforge community https://www.howtoforge.com/community/
+comment out RANDFILE in /etc/ssl/openssl.cnf
+
+sudo unlink /etc/localtime
+sudo ln -s /usr/share/zoneinfo/Asia/Hong_Kong /etc/localtime
+sudo timedatectl
+sudo locale-gen
+sudo dpkg-reconfigure locales
+
+set hostname using
+sudo hostnamectl set-hostname sample.gr88er.com
+
+modify /etc/apt/source.list
+deb http://ports.ubuntu.com/ubuntu-ports/ focal multiverse
+deb-src http://ports.ubuntu.com/ubuntu-ports/ focal multiverse
+deb http://ports.ubuntu.com/ubuntu-ports/ focal-updates multiverse
+deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-updates multiverse
+deb http://ports.ubuntu.com/ubuntu-ports/ focal-backports multiverse
+deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-backports multiverse
+
+---not applicable to odroid---------------------------------------------------------------------------------------------------------------------
+echo "deb https://deb.goaccess.io/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/goaccess.list
+wget -O - https://deb.goaccess.io/gnugpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/goaccess.gpg add -
+sudo apt-get update
+sudo apt-get install goaccess
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+apt-get -y install mailman
+------------------------------------------------------------------------------------------------------------------------------------------------
+Languages to support: <-- en (English)
+Missing site list <-- Ok
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+newlist mailman
+------------------------------------------------------------------------------------------------------------------------------------------------
+Enter the email of the person running the list: <-- admin email address, e.g. listadmin@example.com
+Initial mailman password: <-- admin password for the mailman list
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+newaliases
+service postfix restart
+ln -s /etc/mailman/apache.conf /etc/apache2/conf-available/mailman.conf
+a2enconf mailman
+service apache2 restart
+service mailman start
+
+cd /tmp; git clone https://github.com/agentfrostyqueen/ispconfig_amd64_single-server_ubuntu20.04; cd ispconfig_amd64_single-server_ubuntu20.04/; bash install.sh
