@@ -22,12 +22,13 @@ InstallAntiVirus() {
   #cp -pf amavisd-new amavisd-new_bak
   #patch < /tmp/ubuntu-amavisd-new-2.11.patch
   echo -e "[${green}DONE${NC}]\n"
-  if [ "$CFG_AVUPDATE" == "yes" ]; then
-	echo -n "Updating Freshclam Antivirus Database. Please Wait... "
-	freshclam
-	echo -e "[${green}DONE${NC}]\n"
-  fi
-  echo -n "Restarting ClamAV... "
-  service clamav-daemon restart
-  echo -e "[${green}DONE${NC}]\n"
+  #if [ "$CFG_AVUPDATE" == "yes" ]; then
+#	echo -n "Updating Freshclam Antivirus Database. Please Wait... "
+#	freshclam
+#	echo -e "[${green}DONE${NC}]\n"
+ # fi
+  #echo -n "Restarting ClamAV... "
+  #service clamav-daemon restart
+  systemctl disable clamav-daemon
+  echo -e "[${green}Disabled${NC}]\n"
 }
