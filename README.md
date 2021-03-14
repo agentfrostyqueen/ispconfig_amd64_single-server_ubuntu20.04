@@ -31,10 +31,15 @@ Run the following command as root user:
 ### Gr88er Specific Configs ###
 
 sudo apt install ntp ntpdate nfs-common ssh openssh-server cockpit cockpit-packagekit -y
+
 sudo dpkg-reconfigure dash
+
 sudo service apparmor stop
+
 sudo update-rc.d -f apparmor remove 
+
 sudo apt-get remove apparmor apparmor-utils -y
+
 sudo apt update && sudo apt upgrade -y
 
 comment out RANDFILE in /etc/ssl/openssl.cnf
