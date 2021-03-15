@@ -81,14 +81,13 @@ Install ISPConfig on server1 and prepare the slave server using the instruction 
 ### Prepare Server1 ##  
 
 Login into MySQL and create an account specifically for replication in MySQL. I use a separate user for the replication to minimize the possibility of compromise to other accounts (username and password are stored in plain text in the master info repository file or table):  
-> CREATE USER 'slaveuser2'@'server2.example.tld' IDENTIFIED BY 'slave_user_password';  
-> CREATE USER 'slaveuser2'@'192.168.0.106' IDENTIFIED BY 'slave_user_password';  
-> CREATE USER 'slaveuser2'@'2001:db8::2' IDENTIFIED BY 'slave_user_password';  
+> CREATE USER 'slaveuser2'@'server2.gr88er.com' IDENTIFIED WITH mysql_native_password BY 'slave_user_password';  
+> CREATE USER 'slaveuser2'@'192.168.0.106' IDENTIFIED WITH mysql_native_password BY 'slave_user_password';  
+
 
 and grant the REPLICATION SLAVE privilege:  
-> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser2'@'server2.example.tld';  
-> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser2'@'192.168.0.106';  
-> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser2'@'2001:db8::2';  
+> GRANT REPLICATION SLAVE ON \*.\* TO 'slaveuser2'@'server2.gr88er.com';  
+> GRANT REPLICATION SLAVE ON \*.\* TO 'slaveuser2'@'192.168.0.106';   
 > QUIT;  
 
 Make some changes for the replication to your MySQL-Config:  
@@ -151,7 +150,7 @@ Start MySQL on server2:
 > service mysql start  
 
 and login into MySQL to set the master-server with:  
-> CHANGE MASTER TO MASTER_HOST="server1.example.tld", MASTER_USER="slaveuser2", MASTER_PASSWORD="slave_user_password";  
+> CHANGE MASTER TO MASTER_HOST="server1.gr88er.com", MASTER_USER="slaveuser2", MASTER_PASSWORD="slave_user_password";  
 
 Start the slave:  
 > START SLAVE;  
@@ -162,12 +161,11 @@ We are running a MySQL Master-Slave-Replication where server1 is the master and 
 
 ## MySQL Master-Master-Replication #
 Create the MySQL-User for the replication and grant the privileg in MySQL:  
-> CREATE USER 'slaveuser1'@'server1.example.tld' IDENTIFIED BY 'slave_user_password';  
-> CREATE USER 'slaveuser1'@'192.168.0.105' IDENTIFIED BY 'slave_user_password';  
-> CREATE USER 'slaveuser1'@'2001:db8::1' IDENTIFIED BY 'slave_user_password';  
-> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser1'@'server1.example.tld';  
-> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser1'@'192.168.0.105';  
-> GRANT REPLICATION SLAVE ON *.* TO 'slaveuser1'@'2001:db8::1';  
+> CREATE USER 'slaveuser1'@'server1.gr88er.com' IDENTIFIED WITH mysql_native_password BY 'slave_user_password';  
+> CREATE USER 'slaveuser1'@'192.168.0.105' IDENTIFIED WITH mysql_native_password BY 'slave_user_password';  
+
+> GRANT REPLICATION SLAVE ON \*.\* TO 'slaveuser1'@'server1.gr88er.com';  
+> GRANT REPLICATION SLAVE ON \*.\* TO 'slaveuser1'@'192.168.0.105';   
 > QUIT;  
 
 Make some changes for the replication to your MySQL-Config on server2:  
@@ -206,11 +204,9 @@ and check the slave-status with
 Login into MySQL and create a root-user for server2:  
 
 > CREATE USER 'root'@'192.168.0.106' IDENTIFIED BY 'myrootpassword';  
-> GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.0.106' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
-> CREATE USER 'root'@'server2.example.tld' IDENTIFIED BY 'myrootpassword';  
-> GRANT ALL PRIVILEGES ON *.* TO 'root'@'server2.example.tld' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
-> CREATE USER 'root'@'2a01:dddd::2' IDENTIFIED BY 'myrootpassword';  
-> GRANT ALL PRIVILEGES ON *.* TO 'root'@'2001:db8::2' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
+> GRANT ALL PRIVILEGES ON \*.\* TO 'root'@'192.168.0.106' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
+> CREATE USER 'root'@'server2.gr88er.com' IDENTIFIED BY 'myrootpassword';  
+> GRANT ALL PRIVILEGES ON \*.\* TO 'root'@'server2.gr88er.com' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
 > QUIT;  
 
 The replication covers all database. Copy the db-configs for PHPMyAdmin and roundcube from server1 to server2.  
