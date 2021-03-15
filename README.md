@@ -190,7 +190,7 @@ Login into MySQL and get the Master Binary Log Coordinates:
 > SHOW MASTER STATUS \G  
 
 Login into MySQL on server1 and set the master-server with  
-> CHANGE MASTER TO MASTER_HOST="server2.example.tld", MASTER_PASSWORD="slave_user_password", MASTER_USER="slaveuser1", MASTER_LOG_FILE='mysql-bin.000002',
+> CHANGE MASTER TO MASTER_HOST="server2.gr88er.com", MASTER_PASSWORD="slave_user_password", MASTER_USER="slaveuser1", MASTER_LOG_FILE='mysql-bin.000002',
 MASTER_LOG_POS=326;  
 
 Start the slave:  
@@ -203,9 +203,9 @@ and check the slave-status with
 
 Login into MySQL and create a root-user for server2:  
 
-> CREATE USER 'root'@'192.168.0.106' IDENTIFIED BY 'myrootpassword';  
+> CREATE USER 'root'@'192.168.0.106' IDENTIFIED WITH mysql_native_password BY 'myrootpassword';  
 > GRANT ALL PRIVILEGES ON \*.\* TO 'root'@'192.168.0.106' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
-> CREATE USER 'root'@'server2.gr88er.com' IDENTIFIED BY 'myrootpassword';  
+> CREATE USER 'root'@'server2.gr88er.com' IDENTIFIED WITH mysql_native_password BY 'myrootpassword';  
 > GRANT ALL PRIVILEGES ON \*.\* TO 'root'@'server2.gr88er.com' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;  
 > QUIT;  
 
