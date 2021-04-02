@@ -47,18 +47,6 @@ Note: remove hhvm on odroid
 fix /etc/postfix/master.cf  
 openssl dhparam -out /etc/ssl/private/pure-ftpd-dhparams.pem 3072  
 create phpmyadmin table in DB  
-Fix phpmyadmin bugs  
-> /usr/share/phpmyadmin/libraries/plugin_interface.lib.php  
-From  
-> if ($options != null && count($options) > 0) {  
-To  
-> if ($options != null && count((array)$options) > 0) {  
-
-> /usr/share/phpmyadmin/libraries/sql.lib.php  
-From  
-> || (count($analyzed_sql_results[‘select_expr’] == 1)  
-To  
-> || (count($analyzed_sql_results[‘select_expr’]) == 1  
 
 apt-get -y install mailman  
 Languages to support: <-- en (English)  
@@ -68,6 +56,7 @@ newlist mailman
 Enter the email of the person running the list: <-- admin email address, e.g. listadmin@example.com  
 Initial mailman password: <-- admin password for the mailman list  
 
+if with error run newlist mailman  
 newaliases  
 service postfix restart  
 ln -s /etc/mailman/apache.conf /etc/apache2/conf-available/mailman.conf  
