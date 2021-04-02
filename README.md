@@ -47,6 +47,7 @@ Note: remove hhvm on odroid
 fix /etc/postfix/master.cf  
 openssl dhparam -out /etc/ssl/private/pure-ftpd-dhparams.pem 3072  
 create phpmyadmin table in DB  
+nano /lib/systemd/system/dovecot.service update to /run  
 
 apt-get -y install mailman  
 Languages to support: <-- en (English)  
