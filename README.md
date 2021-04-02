@@ -52,7 +52,7 @@ apt-get -y install mailman
 Languages to support: <-- en (English)  
 Missing site list <-- Ok  
 
-newlist mailman
+newlist mailman  
 Enter the email of the person running the list: <-- admin email address, e.g. listadmin@example.com  
 Initial mailman password: <-- admin password for the mailman list  
 
