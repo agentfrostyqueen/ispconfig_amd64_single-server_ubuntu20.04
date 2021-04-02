@@ -255,3 +255,7 @@ restart Dovecot:
 
 You can check the replication on each server:  
 > doveadm replicator status '*'  
+
+
+You will need to edit the username and password in /var/lib/roundcube/plugins/ispconfig3_account/config/config.inc.php of the roundcube user, as the one you set in ISPconfig (under System > remote users)
+
